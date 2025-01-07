@@ -1,6 +1,7 @@
 package com.example.movierecap
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -23,6 +24,7 @@ import com.example.movierecap.ui.theme.MovieRecapTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d("LifeCycle", "onCreate")
         enableEdgeToEdge()
         setContent {
             MovieRecapTheme {
@@ -33,6 +35,31 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("LifeCycle", "onStart")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("LifeCycle", "onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("LifeCycle", "onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("LifeCycle", "onStop")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("LifeCycle", "onDestroy")
     }
 }
 
