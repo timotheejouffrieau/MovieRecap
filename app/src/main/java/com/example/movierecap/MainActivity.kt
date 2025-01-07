@@ -19,6 +19,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import com.example.movierecap.ui.theme.MovieRecapTheme
 
 class MainActivity : ComponentActivity() {
@@ -67,15 +70,23 @@ class MainActivity : ComponentActivity() {
 fun Compteur(modifier: Modifier = Modifier) {
     var compteur by rememberSaveable { mutableIntStateOf(0) }
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxSize()
+            .rotate(compteur * 10f),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text("Valeur : $compteur")
+        Text(
+            text = "Valeur : $compteur",
+            textDecoration = TextDecoration.Underline
+        )
         Button(
             onClick = { compteur++ }
         ) {
-            Text("+1")
+            Text(
+                text = "+1",
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }
