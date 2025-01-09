@@ -1,4 +1,4 @@
-package com.example.movierecap
+package com.example.movierecap.data.model
 
 data class Movie(
     val id : Int,
