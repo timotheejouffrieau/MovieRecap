@@ -1,5 +1,6 @@
 package com.example.movierecap.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,7 +15,8 @@ import com.example.movierecap.data.model.Movie
 @Composable
 fun MovieList(
     modifier: Modifier = Modifier,
-    movies: List<Movie>
+    movies: List<Movie>,
+    onMovieClick: (movieId: Int) -> Unit
 ) {
     LazyColumn(
         modifier = modifier.padding(8.dp)
@@ -23,7 +25,10 @@ fun MovieList(
             MovieCard(
                 title = movie.title,
                 author = movie.author,
-                rate = movie.rate
+                rate = movie.rate,
+                modifier = Modifier.clickable{
+                    onMovieClick(movie.id)
+                }
             )
             Spacer(modifier = Modifier.height(4.dp)) // Espacement entre les cartes
         }
@@ -38,5 +43,5 @@ fun PreviewMovieList() {
         Movie(2, "Inception", "Christopher Nolan", 4.7f),
         Movie(3, "Interstellar", "Christopher Nolan", 4.6f)
     )
-    MovieList(movies = movies)
+    MovieList(movies = movies){}
 }
