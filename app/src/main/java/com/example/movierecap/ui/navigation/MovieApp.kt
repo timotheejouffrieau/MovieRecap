@@ -1,5 +1,9 @@
 package com.example.movierecap.ui.navigation
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
@@ -18,7 +22,20 @@ fun MovieApp(modifier: Modifier = Modifier) {
         navController = navController,
         startDestination = "movieList"
     ) {
-        composable("movieList") {
+        composable(
+            route = "movieList",
+            enterTransition = {
+                slideInHorizontally { fullWidth -> fullWidth } + fadeIn()
+            },
+            exitTransition = {
+                slideOutHorizontally { fullWidth -> -fullWidth } + fadeOut()
+            },
+            popEnterTransition = {
+                slideInHorizontally { fullWidth -> -fullWidth } + fadeIn()
+            },
+            popExitTransition = {
+                slideOutHorizontally { fullWidth -> fullWidth } + fadeOut()
+            }) {
             MovieListScreen(
                 modifier = modifier,
                 navController = navController
@@ -26,8 +43,20 @@ fun MovieApp(modifier: Modifier = Modifier) {
         }
 
         composable(
-            "movieDetail/{movieId}",
-            arguments = listOf(navArgument("movieId") { type = NavType.IntType })
+            route = "movieDetail/{movieId}",
+            arguments = listOf(navArgument("movieId") { type = NavType.IntType }),
+            enterTransition = {
+                slideInHorizontally { fullWidth -> fullWidth } + fadeIn()
+            },
+            exitTransition = {
+                slideOutHorizontally { fullWidth -> -fullWidth } + fadeOut()
+            },
+            popEnterTransition = {
+                slideInHorizontally { fullWidth -> -fullWidth } + fadeIn()
+            },
+            popExitTransition = {
+                slideOutHorizontally { fullWidth -> fullWidth } + fadeOut()
+            }
         ) { backStackEntry ->
             val movieIdArg = backStackEntry.arguments?.getInt("movieId")
             MovieDetailScreen(
