@@ -3,14 +3,18 @@ package com.example.movierecap.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movierecap.data.model.Movie
-import com.example.movierecap.data.repository.MovieRepository
+import com.example.movierecap.data.remote.MovieClient
+import com.example.movierecap.data.repository.MovieRepositoryImpl
+import com.example.movierecap.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class MovieViewModel : ViewModel() {
 
-    private val movieRepository: MovieRepository = MovieRepository()
+    //Idéalement il faut sortir la dépendance et créer un MovieViewModelFactory
+    private val movieApiService = MovieClient.create()
+    private val movieRepository: MovieRepository = MovieRepositoryImpl(movieApiService)
 
     private val _movies = MutableStateFlow<List<Movie>>(emptyList())
     val movies: StateFlow<List<Movie>> = _movies

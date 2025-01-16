@@ -43,6 +43,9 @@ dependencies {
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.material.icons.extended)
+    implementation(libs.retrofit2)
+    implementation(libs.retrofit2.converter.gson)
+    implementation(libs.gson)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
