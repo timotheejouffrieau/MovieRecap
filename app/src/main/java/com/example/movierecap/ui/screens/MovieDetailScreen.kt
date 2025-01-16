@@ -2,24 +2,27 @@ package com.example.movierecap.ui.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.movierecap.data.repository.MovieRepository
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.movierecap.ui.components.MovieDetail
+import com.example.movierecap.ui.viewmodels.MovieViewModel
 
 @Composable
 fun MovieDetailScreen(
     modifier: Modifier = Modifier,
-    movieId: Int?
+    movieViewModel: MovieViewModel,
 ) {
 
-    val movie = MovieRepository.getMovieById(movieId)
+    val movie by movieViewModel.selectedMovie.collectAsStateWithLifecycle()
 
     // Si aucune donnée n'est disponible, on affiche un message d'erreur
     if (movie == null) {
@@ -27,10 +30,10 @@ fun MovieDetailScreen(
             modifier = modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = "Aucun film sélectionné ou le film n'a pas été trouvé",
-                style = MaterialTheme.typography.titleLarge,
-                modifier = modifier.padding(16.dp)
+            CircularProgressIndicator(
+                modifier = Modifier.width(64.dp),
+                color = MaterialTheme.colorScheme.secondary,
+                trackColor = MaterialTheme.colorScheme.surfaceVariant,
             )
         }
         return
@@ -38,18 +41,12 @@ fun MovieDetailScreen(
 
     MovieDetail(
         modifier = modifier,
-        movie = movie
+        movie = movie!!
     )
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun MovieDetailScreenPreviewMovie() {
-    MovieDetailScreen(movieId = 1)
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun MovieDetailScreenPreviewNoMovie() {
-    MovieDetailScreen(movieId = null)
+    MovieDetailScreen(movieViewModel = viewModel())
 }

@@ -1,8 +1,16 @@
 package com.example.movierecap.data.repository
 
 import com.example.movierecap.data.model.Movie
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
-object MovieRepository {
+class MovieRepository(
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
+) {
     private val movies = listOf(
         Movie(1, "The Dark Knight", "Christopher Nolan", 4.8f),
         Movie(2, "Inception", "Christopher Nolan", 4.7f),
@@ -26,12 +34,18 @@ object MovieRepository {
         Movie(20, "The Departed", "Martin Scorsese", 4.7f)
     )
 
-    fun getAllMovies(): List<Movie> {
-        return movies
+    fun getAllMovies(): Flow<List<Movie>> {
+        return flow {
+            delay(2000) // Simule un délai de chargement
+            emit(movies)
+        }.flowOn(dispatcher)
     }
 
-    fun getMovieById(movieId: Int?): Movie? {
-        return movies.takeIf { movieId != null }?.find { it.id == movieId }
+    fun getMovieById(movieId: Int?): Flow<Movie?> {
+        return flow {
+            delay(1000) // Simule un délai de chargement
+            emit(movies.takeIf { movieId != null }?.find { it.id == movieId })
+        }.flowOn(dispatcher)
     }
 
 }
