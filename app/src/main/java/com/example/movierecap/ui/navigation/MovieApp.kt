@@ -6,17 +6,19 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavType
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.example.movierecap.ui.screens.MovieDetailScreen
 import com.example.movierecap.ui.screens.MovieListScreen
+import com.example.movierecap.ui.viewmodels.MovieViewModel
 
 @Composable
 fun MovieApp(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
+
+    val movieViewModel: MovieViewModel = viewModel()
 
     NavHost(
         navController = navController,
@@ -38,13 +40,13 @@ fun MovieApp(modifier: Modifier = Modifier) {
             }) {
             MovieListScreen(
                 modifier = modifier,
-                navController = navController
+                navController = navController,
+                movieViewModel = movieViewModel
             )
         }
 
         composable(
-            route = "movieDetail/{movieId}",
-            arguments = listOf(navArgument("movieId") { type = NavType.IntType }),
+            route = "movieDetail",
             enterTransition = {
                 slideInHorizontally { fullWidth -> fullWidth } + fadeIn()
             },
@@ -57,11 +59,10 @@ fun MovieApp(modifier: Modifier = Modifier) {
             popExitTransition = {
                 slideOutHorizontally { fullWidth -> fullWidth } + fadeOut()
             }
-        ) { backStackEntry ->
-            val movieIdArg = backStackEntry.arguments?.getInt("movieId")
+        ) {
             MovieDetailScreen(
                 modifier = modifier,
-                movieId = movieIdArg
+                movieViewModel = movieViewModel
             )
         }
     }
