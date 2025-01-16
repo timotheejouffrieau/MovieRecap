@@ -7,7 +7,8 @@ data class MovieDto(
     @SerializedName("id") val id : Int,
     @SerializedName("title") val title: String,
     @SerializedName("director") val director: String,
-    @SerializedName("rating") val rating: Float
+    @SerializedName("rating") val rating: Float,
+    @SerializedName("poster") val poster: String
 )
 
 fun MovieDto.toMovie() : Movie {
@@ -15,6 +16,7 @@ fun MovieDto.toMovie() : Movie {
         id = id,
         title = title,
         author = director,
-        rate = rating / 2
+        rate = rating / 2,
+        posterUrl = poster
     )
 }
