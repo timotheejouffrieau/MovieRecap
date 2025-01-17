@@ -25,7 +25,7 @@ class MovieViewModel : ViewModel() {
     init {
         // Simule une récupération des films
         viewModelScope.launch {
-            movieRepository.getAllMovies().collect{ movieList ->
+            movieRepository.getAllMovies().collect { movieList ->
                 _movies.value = movieList
             }
         }
@@ -35,10 +35,24 @@ class MovieViewModel : ViewModel() {
         if (_selectedMovie.value == null || _selectedMovie.value!!.id != movieId) {
             _selectedMovie.value = null
             viewModelScope.launch {
-                movieRepository.getMovieById(movieId).collect{ movie ->
+                movieRepository.getMovieById(movieId).collect { movie ->
                     _selectedMovie.value = movie
                 }
             }
         }
+    }
+
+    fun sortData(sortMode: SortMode) {
+        _movies.value = when (sortMode) {
+            SortMode.TITLE -> _movies.value.sortedBy { it.title }
+            SortMode.AUTHOR -> _movies.value.sortedBy { it.author }
+            SortMode.RATE -> _movies.value.sortedBy { it.rate }
+        }
+    }
+
+    enum class SortMode(val display: String) {
+        TITLE("Titre"),
+        AUTHOR("Réal"),
+        RATE("Note")
     }
 }
